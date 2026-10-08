@@ -14,6 +14,10 @@ use App\Core\Log\FileLogger;
 use App\Core\Routing\Router;
 use App\Core\View\SmartyRenderer;
 use App\Core\View\TemplateRendererInterface;
+use App\Repository\CategoryRepositoryInterface;
+use App\Repository\PdoCategoryRepository;
+use App\Repository\PdoPostRepository;
+use App\Repository\PostRepositoryInterface;
 use App\Seeder\CategorySeeder;
 use App\Seeder\DatabaseSeeder;
 use App\Seeder\PostSeeder;
@@ -39,6 +43,13 @@ $container->set(TemplateRendererInterface::class, fn () => new SmartyRenderer(
     $settings['smarty_compile_dir'],
 ));
 
+$container->set(CategoryRepositoryInterface::class, fn (ContainerInterface $c) => new PdoCategoryRepository(
+    $c->get(PDO::class),
+));
+$container->set(PostRepositoryInterface::class, fn (ContainerInterface $c) => new PdoPostRepository(
+    $c->get(PDO::class),
+));
+
 $container->set(Router::class, fn () => new Router(require __DIR__ . '/routes.php'));
 $container->set(ErrorHandler::class, fn (ContainerInterface $c) => new ErrorHandler(
     $c->get(TemplateRendererInterface::class),
@@ -52,6 +63,8 @@ $container->set(Kernel::class, fn (ContainerInterface $c) => new Kernel(
 ));
 
 $container->set(HomeController::class, fn (ContainerInterface $c) => new HomeController(
+    $c->get(CategoryRepositoryInterface::class),
+    $c->get(PostRepositoryInterface::class),
     $c->get(TemplateRendererInterface::class),
 ));
 $container->set(CategoryController::class, fn (ContainerInterface $c) => new CategoryController(
