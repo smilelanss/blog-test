@@ -16,6 +16,7 @@ final readonly class SmartyRenderer implements TemplateRendererInterface
         $this->smarty->setTemplateDir($templatesDir);
         $this->smarty->setCompileDir($compileDir);
         $this->smarty->setEscapeHtml(true);
+        $this->smarty->registerPlugin(Smarty::PLUGIN_MODIFIER, 'paragraphs', $this->paragraphs(...));
     }
 
     public function render(string $template, array $data = []): string
@@ -24,5 +25,15 @@ final readonly class SmartyRenderer implements TemplateRendererInterface
         $tpl->assign($data);
 
         return $tpl->fetch();
+    }
+
+    private function paragraphs(string $text): string
+    {
+        $paragraphs = preg_split('/\R\s*\R/', trim($text), -1, PREG_SPLIT_NO_EMPTY);
+
+        return implode(PHP_EOL, array_map(
+            fn (string $paragraph): string => '<p>' . htmlspecialchars(trim($paragraph)) . '</p>',
+            $paragraphs,
+        ));
     }
 }

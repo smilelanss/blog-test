@@ -27,6 +27,20 @@ final readonly class PdoCategoryRepository implements CategoryRepositoryInterfac
         return array_map($this->hydrate(...), $rows);
     }
 
+    public function findByPostId(int $postId): array
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT c.id, c.name, c.slug, c.description
+             FROM categories c
+             JOIN post_category pc ON pc.category_id = c.id
+             WHERE pc.post_id = :post_id
+             ORDER BY c.name',
+        );
+        $statement->execute(['post_id' => $postId]);
+
+        return array_map($this->hydrate(...), $statement->fetchAll());
+    }
+
     /**
      * @param array<string, mixed> $row
      */

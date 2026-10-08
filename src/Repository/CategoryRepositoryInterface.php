@@ -12,4 +12,9 @@ interface CategoryRepositoryInterface
      * @return list<Category>
      */
     public function findNonEmpty(): array;
+
+    /**
+     * @return list<Category>
+     */
+    public function findByPostId(int $postId): array;
 }

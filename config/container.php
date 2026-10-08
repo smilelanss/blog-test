@@ -23,6 +23,7 @@ use App\Seeder\DatabaseSeeder;
 use App\Seeder\PostSeeder;
 use App\Seeder\TextGenerator;
 use App\Seeder\ThemeCatalog;
+use App\Service\SimilarPostsFinder;
 use App\Support\Slugger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -50,6 +51,10 @@ $container->set(PostRepositoryInterface::class, fn (ContainerInterface $c) => ne
     $c->get(PDO::class),
 ));
 
+$container->set(SimilarPostsFinder::class, fn (ContainerInterface $c) => new SimilarPostsFinder(
+    $c->get(PostRepositoryInterface::class),
+));
+
 $container->set(Router::class, fn () => new Router(require __DIR__ . '/routes.php'));
 $container->set(ErrorHandler::class, fn (ContainerInterface $c) => new ErrorHandler(
     $c->get(TemplateRendererInterface::class),
@@ -71,6 +76,9 @@ $container->set(CategoryController::class, fn (ContainerInterface $c) => new Cat
     $c->get(TemplateRendererInterface::class),
 ));
 $container->set(PostController::class, fn (ContainerInterface $c) => new PostController(
+    $c->get(PostRepositoryInterface::class),
+    $c->get(CategoryRepositoryInterface::class),
+    $c->get(SimilarPostsFinder::class),
     $c->get(TemplateRendererInterface::class),
 ));
 
