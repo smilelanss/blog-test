@@ -6,6 +6,8 @@ use App\Controller\CategoryController;
 use App\Controller\HomeController;
 use App\Controller\PostController;
 use App\Core\Container\Container;
+use App\Core\Database\Migrator;
+use App\Core\Database\PdoFactory;
 use App\Core\Http\ErrorHandler;
 use App\Core\Http\Kernel;
 use App\Core\Log\FileLogger;
@@ -19,6 +21,11 @@ $settings = require __DIR__ . '/settings.php';
 
 $container = new Container();
 
+$container->set(PDO::class, fn () => PdoFactory::create($settings['db']));
+$container->set(Migrator::class, fn (ContainerInterface $c) => new Migrator(
+    $c->get(PDO::class),
+    $settings['migrations_dir'],
+));
 $container->set(LoggerInterface::class, fn () => new FileLogger($settings['log_file']));
 $container->set(TemplateRendererInterface::class, fn () => new SmartyRenderer(
     $settings['templates_dir'],

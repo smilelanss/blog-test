@@ -13,6 +13,11 @@ services:
     build: ./docker/php
     environment:
       APP_DEBUG: ${APP_DEBUG:-0}
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-blog}
+      DB_USER: ${DB_USER:-blog}
+      DB_PASS: ${DB_PASS:-secret}
     volumes:
       - .:/var/www
     depends_on:
