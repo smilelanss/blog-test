@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use App\Entity\PostSummary;
+use App\Enum\PostSort;
 
 interface PostRepositoryInterface
 {
@@ -29,4 +30,11 @@ interface PostRepositoryInterface
      * @return list<PostSummary>
      */
     public function findLatest(int $limit, array $excludeIds = []): array;
+
+    public function countByCategory(int $categoryId): int;
+
+    /**
+     * @return list<PostSummary>
+     */
+    public function findByCategory(int $categoryId, PostSort $sort, int $limit, int $offset): array;
 }

@@ -73,6 +73,8 @@ $container->set(HomeController::class, fn (ContainerInterface $c) => new HomeCon
     $c->get(TemplateRendererInterface::class),
 ));
 $container->set(CategoryController::class, fn (ContainerInterface $c) => new CategoryController(
+    $c->get(CategoryRepositoryInterface::class),
+    $c->get(PostRepositoryInterface::class),
     $c->get(TemplateRendererInterface::class),
 ));
 $container->set(PostController::class, fn (ContainerInterface $c) => new PostController(

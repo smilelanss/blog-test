@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use App\Entity\PostSummary;
+use App\Enum\PostSort;
 use DateTimeImmutable;
 use PDO;
 
@@ -104,6 +105,38 @@ final readonly class PdoPostRepository implements PostRepositoryInterface
             $statement->bindValue($index + 1, $value, PDO::PARAM_INT);
         }
 
+        $statement->execute();
+
+        return array_map($this->hydrateSummary(...), $statement->fetchAll());
+    }
+
+    public function countByCategory(int $categoryId): int
+    {
+        $statement = $this->pdo->prepare('SELECT COUNT(*) FROM post_category WHERE category_id = :category_id');
+        $statement->execute(['category_id' => $categoryId]);
+
+        return (int) $statement->fetchColumn();
+    }
+
+    public function findByCategory(int $categoryId, PostSort $sort, int $limit, int $offset): array
+    {
+        $orderBy = match ($sort) {
+            PostSort::Date => 'p.published_at DESC',
+            PostSort::Views => 'p.views DESC',
+        };
+
+        $statement = $this->pdo->prepare(sprintf(
+            'SELECT p.id, p.title, p.slug, p.description, p.image, p.views, p.published_at
+             FROM posts p
+             JOIN post_category pc ON pc.post_id = p.id
+             WHERE pc.category_id = :category_id
+             ORDER BY %s, p.id DESC
+             LIMIT :limit OFFSET :offset',
+            $orderBy,
+        ));
+        $statement->bindValue('category_id', $categoryId, PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue('offset', $offset, PDO::PARAM_INT);
         $statement->execute();
 
         return array_map($this->hydrateSummary(...), $statement->fetchAll());

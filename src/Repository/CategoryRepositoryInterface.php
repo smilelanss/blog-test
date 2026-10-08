@@ -17,4 +17,6 @@ interface CategoryRepositoryInterface
      * @return list<Category>
      */
     public function findByPostId(int $postId): array;
+
+    public function findBySlug(string $slug): ?Category;
 }

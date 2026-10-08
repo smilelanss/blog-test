@@ -41,6 +41,15 @@ final readonly class PdoCategoryRepository implements CategoryRepositoryInterfac
         return array_map($this->hydrate(...), $statement->fetchAll());
     }
 
+    public function findBySlug(string $slug): ?Category
+    {
+        $statement = $this->pdo->prepare('SELECT id, name, slug, description FROM categories WHERE slug = :slug');
+        $statement->execute(['slug' => $slug]);
+        $row = $statement->fetch();
+
+        return $row === false ? null : $this->hydrate($row);
+    }
+
     /**
      * @param array<string, mixed> $row
      */
