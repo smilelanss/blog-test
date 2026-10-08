@@ -1,9 +1,7 @@
 <article class="post-card">
-    {if $post->image}
-        <a class="post-card__image" href="/post/{$post->slug}">
-            <img src="{$post->image}" alt="{$post->title}" width="1200" height="630" loading="lazy">
-        </a>
-    {/if}
+    <a class="post-card__image" href="/post/{$post->slug}">
+        <img src="{$post->image|default:'/images/covers/placeholder.jpg'}" alt="{$post->title}" width="1200" height="630" loading="lazy">
+    </a>
 
     <h3 class="post-card__title">
         <a href="/post/{$post->slug}">{$post->title}</a>

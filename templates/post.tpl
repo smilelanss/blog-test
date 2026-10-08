@@ -19,9 +19,7 @@
             {/foreach}
         </ul>
 
-        {if $post->image}
-            <img class="post__image" src="{$post->image}" alt="{$post->title}" width="1200" height="630">
-        {/if}
+        <img class="post__image" src="{$post->image|default:'/images/covers/placeholder.jpg'}" alt="{$post->title}" width="1200" height="630">
 
         <div class="post__content">
             {$post->content|paragraphs nofilter}
