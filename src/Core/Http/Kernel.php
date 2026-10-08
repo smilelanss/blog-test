@@ -8,12 +8,14 @@ use App\Core\Http\Exception\HttpNotFoundException;
 use App\Core\Routing\Router;
 use LogicException;
 use Psr\Container\ContainerInterface;
+use Throwable;
 
 final readonly class Kernel
 {
     public function __construct(
         private Router $router,
         private ContainerInterface $container,
+        private ErrorHandler $errorHandler,
     ) {
     }
 
@@ -41,8 +43,8 @@ final readonly class Kernel
             }
 
             return $controller->handle($request->withRouteParams($match->params));
-        } catch (HttpNotFoundException) {
-            return new Response('Страница не найдена', 404, ['Content-Type' => 'text/plain; charset=utf-8']);
+        } catch (Throwable $exception) {
+            return $this->errorHandler->handle($exception);
         }
     }
 }

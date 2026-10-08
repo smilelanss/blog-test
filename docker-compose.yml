@@ -11,6 +11,8 @@ services:
 
   php:
     build: ./docker/php
+    environment:
+      APP_DEBUG: ${APP_DEBUG:-0}
     volumes:
       - .:/var/www
     depends_on:
