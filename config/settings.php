@@ -8,6 +8,9 @@ return [
     'smarty_compile_dir' => dirname(__DIR__) . '/var/smarty',
     'log_file' => dirname(__DIR__) . '/var/log/app.log',
     'migrations_dir' => dirname(__DIR__) . '/database/migrations',
+    'themes_file' => dirname(__DIR__) . '/database/seeds/themes.php',
+    'covers_dir' => dirname(__DIR__) . '/public/images/covers',
+    'covers_url' => '/images/covers',
     'db' => [
         'host' => (string) getenv('DB_HOST'),
         'port' => (int) getenv('DB_PORT'),

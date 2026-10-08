@@ -14,8 +14,15 @@ use App\Core\Log\FileLogger;
 use App\Core\Routing\Router;
 use App\Core\View\SmartyRenderer;
 use App\Core\View\TemplateRendererInterface;
+use App\Seeder\CategorySeeder;
+use App\Seeder\DatabaseSeeder;
+use App\Seeder\PostSeeder;
+use App\Seeder\TextGenerator;
+use App\Seeder\ThemeCatalog;
+use App\Support\Slugger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Random\Randomizer;
 
 $settings = require __DIR__ . '/settings.php';
 
@@ -52,6 +59,34 @@ $container->set(CategoryController::class, fn (ContainerInterface $c) => new Cat
 ));
 $container->set(PostController::class, fn (ContainerInterface $c) => new PostController(
     $c->get(TemplateRendererInterface::class),
+));
+
+$container->set(Randomizer::class, fn () => new Randomizer());
+$container->set(Slugger::class, fn () => new Slugger());
+$container->set(ThemeCatalog::class, fn () => new ThemeCatalog(require $settings['themes_file']));
+$container->set(TextGenerator::class, fn (ContainerInterface $c) => new TextGenerator(
+    $c->get(Randomizer::class),
+));
+$container->set(CategorySeeder::class, fn (ContainerInterface $c) => new CategorySeeder(
+    $c->get(PDO::class),
+    $c->get(ThemeCatalog::class),
+    $c->get(Slugger::class),
+));
+$container->set(PostSeeder::class, fn (ContainerInterface $c) => new PostSeeder(
+    $c->get(PDO::class),
+    $c->get(ThemeCatalog::class),
+    $c->get(TextGenerator::class),
+    $c->get(Slugger::class),
+    $c->get(Randomizer::class),
+    array_map(
+        fn (string $file): string => $settings['covers_url'] . '/' . basename($file),
+        glob($settings['covers_dir'] . '/*.jpg') ?: [],
+    ),
+));
+$container->set(DatabaseSeeder::class, fn (ContainerInterface $c) => new DatabaseSeeder(
+    $c->get(PDO::class),
+    $c->get(ThemeCatalog::class),
+    [$c->get(CategorySeeder::class), $c->get(PostSeeder::class)],
 ));
 
 return $container;
