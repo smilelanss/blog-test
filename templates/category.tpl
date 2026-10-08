@@ -22,6 +22,6 @@
 
         {include file="partials/pagination.tpl" baseUrl="/category/{$category->slug}"}
     {else}
-        <p>Статей пока нет.</p>
+        <p class="empty">Статей пока нет.</p>
     {/if}
 {/block}

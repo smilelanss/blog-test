@@ -1,0 +1,27 @@
+@use "../variables" as *;
+
+.category-section + .category-section {
+  margin-top: $space-xxl;
+}
+
+.category-section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-sm $space-md;
+  margin-bottom: $space-lg;
+}
+
+.category-section__title a {
+  color: $color-text;
+
+  &:hover {
+    color: $color-accent;
+  }
+}
+
+.category-section__more {
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}

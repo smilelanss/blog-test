@@ -1,0 +1,50 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  margin-top: $space-xl;
+}
+
+.pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 $space-sm;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  color: $color-text;
+  font-size: 0.9375rem;
+
+  &:hover {
+    border-color: $color-accent;
+    color: $color-accent;
+  }
+}
+
+.pagination__link--active,
+.pagination__link--active:hover {
+  border-color: $color-accent;
+  background: $color-accent;
+  color: #fff;
+}
+
+.pagination__label {
+  display: none;
+
+  @include respond-to(tablet) {
+    display: inline;
+  }
+}
+
+.pagination__gap {
+  padding: 0 $space-xs;
+  color: $color-text-light;
+}

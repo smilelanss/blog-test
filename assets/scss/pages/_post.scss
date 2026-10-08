@@ -1,0 +1,59 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.post {
+  max-width: $content-width;
+  margin: 0 auto;
+}
+
+.post__title {
+  font-size: 1.75rem;
+
+  @include respond-to(tablet) {
+    font-size: 2.25rem;
+  }
+}
+
+.post__meta {
+  margin-top: $space-md;
+  color: $color-text-light;
+  font-size: 0.875rem;
+}
+
+.post__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-sm;
+  margin: $space-md 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post__image {
+  width: 100%;
+  margin-top: $space-lg;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-radius: $radius-lg;
+  background: $color-placeholder;
+}
+
+.post__content {
+  margin-top: $space-lg;
+  font-size: 1.125rem;
+  line-height: 1.75;
+
+  p + p {
+    margin-top: 1.25em;
+  }
+}
+
+.similar-posts {
+  margin-top: $space-xxl;
+  padding-top: $space-xl;
+  border-top: 1px solid $color-border;
+}
+
+.similar-posts__title {
+  margin-bottom: $space-lg;
+}

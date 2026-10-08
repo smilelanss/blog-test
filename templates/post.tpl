@@ -30,7 +30,7 @@
 
     {if $similarPosts}
         <section class="similar-posts">
-            <h2>Похожие статьи</h2>
+            <h2 class="similar-posts__title">Похожие статьи</h2>
 
             <div class="post-grid">
                 {foreach $similarPosts as $similarPost}

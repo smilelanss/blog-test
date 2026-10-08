@@ -2,4 +2,6 @@
 .env
 vendor/
 var/
+node_modules/
+public/css/
 .php-cs-fixer.cache

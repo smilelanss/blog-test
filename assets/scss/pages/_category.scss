@@ -1,0 +1,18 @@
+@use "../variables" as *;
+
+.category-header {
+  max-width: $content-width;
+  margin-bottom: $space-xl;
+}
+
+.category-header__description {
+  margin-top: $space-sm;
+  color: $color-text-muted;
+  font-size: 1.0625rem;
+}
+
+.category-header__count {
+  margin-top: $space-sm;
+  color: $color-text-light;
+  font-size: 0.875rem;
+}

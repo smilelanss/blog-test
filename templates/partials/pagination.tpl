@@ -3,7 +3,7 @@
 {if $pagination->totalPages() > 1}
     <nav class="pagination" aria-label="Страницы">
         {if $pagination->hasPrevious()}
-            <a class="pagination__link" href="{page_url page=$pagination->page - 1}" rel="prev">← Назад</a>
+            <a class="pagination__link" href="{page_url page=$pagination->page - 1}" rel="prev" aria-label="Предыдущая страница">← <span class="pagination__label">Назад</span></a>
         {/if}
 
         {foreach $pagination->pages() as $number}
@@ -17,7 +17,7 @@
         {/foreach}
 
         {if $pagination->hasNext()}
-            <a class="pagination__link" href="{page_url page=$pagination->page + 1}" rel="next">Вперёд →</a>
+            <a class="pagination__link" href="{page_url page=$pagination->page + 1}" rel="next" aria-label="Следующая страница"><span class="pagination__label">Вперёд</span> →</a>
         {/if}
     </nav>
 {/if}
